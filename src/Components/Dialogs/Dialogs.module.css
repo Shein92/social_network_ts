@@ -1,0 +1,24 @@
+.dialogs {
+    display: grid;
+    grid-template-columns: 2fr 10fr;
+}
+
+.dialogs_items {
+    padding: 10px;
+}
+/* .dialogs_items .active{
+    color: goldenrod;
+} */
+.dialog a{
+    text-decoration: none;
+    color: rgb(57, 158, 194);
+}
+.dialog a.active{
+    color: goldenrod;
+}
+
+.messages {
+    padding: 10px;
+}
+
+.message {}
