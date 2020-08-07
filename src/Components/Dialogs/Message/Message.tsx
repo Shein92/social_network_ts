@@ -1,7 +1,6 @@
 import React from 'react';
 import dialog from './../Dialogs.module.css';
 
-// + ' ' + dialog.active
 type MessagePropsType = {
     message: string,
     // sendMessage: (sendMessage: string) => void
