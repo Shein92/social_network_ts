@@ -11,13 +11,14 @@ import { StateType, ActionsType, PostType, DialogsDataType } from './Redux/state
 import { CombinedState, Store } from 'redux';
 import DialogsContainer from './Components/Dialogs/DialogsContainer';
 
-type AppPropsType = {
-	state: StateType
-	dispatch: (action: ActionsType) => void
-	store: Store<CombinedState<{ profilePage: PostType; messagesPage: DialogsDataType; }>, ActionsType>
-}
+// type AppPropsType = {
+// 	state?: StateType
+// 	dispatch?: (action: ActionsType) => void
+// 	store?: Store<CombinedState<{ profilePage: PostType; messagesPage: DialogsDataType; }>, ActionsType>
+// }
 
-function App(props: AppPropsType) {
+// function App(props: AppPropsType) {
+function App(props: any) {
 	debugger
 	return (
 		<BrowserRouter>
@@ -26,6 +27,18 @@ function App(props: AppPropsType) {
 				<Nav />
 				<div className="app-wrapper-content">
 					<Route path="/messages" render={() =>
+						// <DialogsContainer store={props.store}
+						<DialogsContainer 
+							// state={props.state.messagesPage}
+							// dispatch={props.dispatch}
+						/>} />
+					<Route path="/profile" render={() =>
+						// <Profile store={props.store}
+						<Profile
+						// state={props.state.profilePage}
+						// 	dispatch={props.dispatch}
+						/>} />
+					{/* <Route path="/messages" render={() =>
 						<DialogsContainer store={props.store}
 							// state={props.state.messagesPage}
 							// dispatch={props.dispatch}
@@ -34,7 +47,7 @@ function App(props: AppPropsType) {
 						<Profile store={props.store}
 						// state={props.state.profilePage}
 						// 	dispatch={props.dispatch}
-						/>} />
+						/>} /> */}
 					<Route path="/news" render={() => <News />} />
 					<Route path="/music" render={() => <Music />} />
 					<Route path="/settings" render={() => <Settings />} />

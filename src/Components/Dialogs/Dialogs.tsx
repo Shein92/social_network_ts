@@ -6,20 +6,19 @@ import { DialogsDataType, PostType } from '../../Redux/state';
 import { CombinedState } from 'redux';
 
 type DialogsPropsType = {
-	state: CombinedState<{
-		profilePage: PostType;
-		messagesPage: DialogsDataType;
-	}>
+	messagesPage: DialogsDataType;
+
 	sendMessage: () => void
-	onNewMessageChange: (body: string) => void
+	onNewMessageChange: (newText: string) => void
 }
 
 const Dialogs = (props: DialogsPropsType) => {
-	let dialogsElements = props.state.messagesPage.dialogsData.map(d => <DialogItem name={d.name} id={d.id} />)
+
+	let dialogsElements = props.messagesPage.dialogsData.map(d => <DialogItem name={d.name} id={d.id} />)
 	// props.state.dialogsData.map(d => <DialogItem name={d.name} id={d.id} />);
-	let messagesElements = props.state.messagesPage.messagesData.map(mes => <Message message={mes.message} />);
+	let messagesElements = props.messagesPage.messagesData.map(mes => <Message message={mes.message} />);
 	// props.state.messagesData.map(mes => <Message message={mes.message} />);
-	let newMessageBody = props.state.messagesPage.newMessageBody;
+	let newMessageBody = props.messagesPage.newMessageBody;
 	// props.state.newMessageBody;
 
 	let sendMessage = () => {
