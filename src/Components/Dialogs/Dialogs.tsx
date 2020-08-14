@@ -2,8 +2,7 @@ import React, { ChangeEvent } from 'react';
 import dialog from './Dialogs.module.css';
 import DialogItem from './DialogItem/DialogItem';
 import Message from './Message/Message';
-import { DialogsDataType, PostType } from '../../Redux/state';
-import { CombinedState } from 'redux';
+import { DialogsDataType } from '../../Redux/state';
 
 type DialogsPropsType = {
 	messagesPage: DialogsDataType;
@@ -14,12 +13,9 @@ type DialogsPropsType = {
 
 const Dialogs = (props: DialogsPropsType) => {
 
-	let dialogsElements = props.messagesPage.dialogsData.map(d => <DialogItem name={d.name} id={d.id} />)
-	// props.state.dialogsData.map(d => <DialogItem name={d.name} id={d.id} />);
-	let messagesElements = props.messagesPage.messagesData.map(mes => <Message message={mes.message} />);
-	// props.state.messagesData.map(mes => <Message message={mes.message} />);
+	let dialogsElements = props.messagesPage.dialogsData.map(d => <DialogItem key={d.id} name={d.name} id={d.id} />)
+	let messagesElements = props.messagesPage.messagesData.map(mes => <Message key={mes.id} message={mes.message} />);
 	let newMessageBody = props.messagesPage.newMessageBody;
-	// props.state.newMessageBody;
 
 	let sendMessage = () => {
 		props.sendMessage();

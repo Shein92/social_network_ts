@@ -23,6 +23,5 @@ const Nav = () => {
       </nav>
     )
 }
-// className={`${classes.item} ${classes.active}`}
 
 export default Nav;

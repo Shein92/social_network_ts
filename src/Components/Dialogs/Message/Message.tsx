@@ -3,7 +3,6 @@ import dialog from './../Dialogs.module.css';
 
 type MessagePropsType = {
     message: string,
-    // sendMessage: (sendMessage: string) => void
 }
 
 const Message = (props: MessagePropsType) => {

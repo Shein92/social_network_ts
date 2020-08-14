@@ -1,6 +1,3 @@
-import ProfileReducer from "./profile-reducer"
-import DialogsReducer from "./dialogs-reducer"
-
 export type PostsDataType = {
 	id: number,
 	message: string,
@@ -54,7 +51,6 @@ export type UpdateMessageActionType = {
 
 type SendMessageActionType = {
 	type: "SEND-MESSAGE",
-	// sendMessage: string
 }
 
 export type ActionsType = AddPostActionType | UpdateNewPostTextActionType | SendMessageActionType | UpdateMessageActionType
