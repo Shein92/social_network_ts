@@ -1,3 +1,5 @@
+import { UserType1, UsersType } from "./users-reducer"
+
 export type PostsDataType = {
 	id: number,
 	message: string,
@@ -12,8 +14,9 @@ export type MessagesType = {
 	message: string
 }
 export type StateType = {
-	profilePage: PostType
-	messagesPage: DialogsDataType
+	profilePage: PostType,
+	messagesPage: DialogsDataType,
+	usersPage: UsersType
 }
 
 export type PostType = {
@@ -53,7 +56,22 @@ type SendMessageActionType = {
 	type: "SEND-MESSAGE",
 }
 
-export type ActionsType = AddPostActionType | UpdateNewPostTextActionType | SendMessageActionType | UpdateMessageActionType
+export type FollowActionType = {
+	type: 'FOLLOW',
+	userId: number
+}
+
+export type UnFollowActionType = {
+	type: 'UNFOLLOW',
+	userId: number
+}
+
+export type SetUsersActionType = {
+	type: 'SET-USERS',
+	users: Array<UserType1>
+}
+
+export type ActionsType = AddPostActionType | UpdateNewPostTextActionType | SendMessageActionType | UpdateMessageActionType | FollowActionType | UnFollowActionType | SetUsersActionType
 
 
 // let store: StoreType = {

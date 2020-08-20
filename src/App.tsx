@@ -8,6 +8,7 @@ import Music from './Components/Music/Music';
 import News from './Components/News/News';
 import Settings from './Components/Settings/Settings';
 import DialogsContainer from './Components/Dialogs/DialogsContainer';
+import UsersContainer from './Components/Users/UsersContainer';
 
 function App() {
 	debugger
@@ -17,10 +18,12 @@ function App() {
 				<Header />
 				<Nav />
 				<div className="app-wrapper-content">
-					<Route path="/messages" render={() =>
-						<DialogsContainer />} />
-					<Route path="/profile" render={() =>
-						<Profile/>} />
+					<Route path="/messages" 
+						render={() => <DialogsContainer />} />
+					<Route path="/profile" 
+						render={() => <Profile/>} />
+					<Route path="/users"
+						render={() => <UsersContainer/>} />
 					<Route path="/news" render={() => <News />} />
 					<Route path="/music" render={() => <Music />} />
 					<Route path="/settings" render={() => <Settings />} />
