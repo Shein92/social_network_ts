@@ -1,5 +1,6 @@
 import { addPostActionCreator, updateNewPostActionCreator } from '../../../Redux/profile-reducer';
-import MyPosts from './MyPosts';
+// import MyPosts from './MyPosts';
+import MyPosts from './MyPostsClassComponent';
 import { ActionsType, StateType } from '../../../Redux/state';
 import { connect } from 'react-redux';
 

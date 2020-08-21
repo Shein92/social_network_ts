@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
-import Users from './Users';
+// import Users from './Users';
+import Users from './UsersClassComponent';
 import { StateType, ActionsType } from '../../Redux/state';
 import { followActionCreator, unFollowActionCreator, UserType1, setUsersActionCreator } from '../../Redux/users-reducer';
 
