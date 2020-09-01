@@ -22,6 +22,32 @@ export type StateType = {
 export type PostType = {
 	postsData: Array<PostsDataType>,
 	newPostText: string,
+	profile: UserProfileType | null
+}
+
+export type UserProfileType = {
+	aboutMe: string,
+	contacts: ContactType,
+	fullName: string,
+	lookingForAJob: boolean,
+	lookingForAJobDescription: string,
+	photos: PhotoType,
+	userId: number
+}
+export type ContactType = {
+	facebook: string,
+	github: string,
+	instagram: string
+	mainLink: null | string
+	twitter: string
+	vk: string
+	website: null | string
+	youtube: null | string
+}
+
+export type PhotoType = {
+	large: string,
+	small: string
 }
 
 export type DialogsDataType = {
@@ -30,13 +56,13 @@ export type DialogsDataType = {
 	newMessageBody: string
 }
 
-export type StoreType = {
-	_state: StateType,
-	getState: () => StateType,
-	_callSubscriber: (state: StateType) => void
-	subscribe: (observer: any) => void
-	dispatch: (action: ActionsType) => void
-}
+// export type StoreType = {
+// 	_state: StateType,
+// 	getState: () => StateType,
+// 	_callSubscriber: (state: StateType) => void
+// 	subscribe: (observer: any) => void
+// 	dispatch: (action: ActionsType) => void
+// }
 
 export type AddPostActionType = {
 	type: "ADD-POST"
@@ -71,7 +97,27 @@ export type SetUsersActionType = {
 	users: Array<UserType1>
 }
 
-export type ActionsType = AddPostActionType | UpdateNewPostTextActionType | SendMessageActionType | UpdateMessageActionType | FollowActionType | UnFollowActionType | SetUsersActionType
+export type SetCurrentPageType = {
+	type: 'SET-CURRENT-PAGE',
+	page: number
+}
+
+export type SetUsersTotalCountType = {
+	type: 'SET-USERS-TOTAL-COUNT',
+	usersCount: number
+}
+
+export type ToggleIsfetchingType = {
+	type: 'TOGGLE-IS-FETCHING',
+	isFetching: boolean
+}
+
+export type SetUserProfileType = {
+	type: 'SET-USER-PROFILE',
+	profile: any
+}
+
+export type ActionsType = AddPostActionType | UpdateNewPostTextActionType | SendMessageActionType | UpdateMessageActionType | FollowActionType | UnFollowActionType | SetUsersActionType | SetCurrentPageType | SetUsersTotalCountType | ToggleIsfetchingType | SetUserProfileType
 
 
 // let store: StoreType = {

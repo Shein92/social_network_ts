@@ -1,47 +1,48 @@
 import React from 'react';
-import { UserType1 } from '../../Redux/users-reducer';
-import styles from './users.module.css'
-import axios from 'axios';
+import styles from './users.module.css';
 import userPhoto from '../../assets/images/rick.png';
+import { UserType1 } from '../../Redux/users-reducer';
+import { NavLink } from 'react-router-dom';
 
 type UsersPropsType = {
-	users: Array<UserType1>,
+	users: Array<UserType1>
+	totalUsersCount: number,
+	pageSize: number,
+	currentPage: number,
 
+	onPageChanged: (pageNumber: number) => void,
 	follow: (userId: number) => void,
 	unFollow: (userId: number) => void,
-	setUsers: (users: Array<UserType1>) => void
 }
 
-const Users = (props: UsersPropsType) => {
-	let getUsers = () => {
-		if (props.users.length === 0) {
-			axios.get('https://social-network.samuraijs.com/api/1.0/users').then(response => {
-				props.setUsers(response.data.items)
-			});
-		}
-	}
+let Users = (props: UsersPropsType) => {
 
-	// if (props.users.length === 0) {
-	// 	props.setUsers([
-	// 		{ id: 1, photoURL: 'https://bnetcmsus-a.akamaihd.net/cms/template_resource/03/03U4D4KNCWEH1530817724856.jpg', followed: false, fullName: "Vasyl", status: "I'm a boss", location: { city: "Mukachevo", country: "Ukraine" } },
-	// 		{ id: 2, photoURL: 'https://bnetcmsus-a.akamaihd.net/cms/template_resource/03/03U4D4KNCWEH1530817724856.jpg', followed: true, fullName: "Karina", status: "I love Vasyl", location: { city: "Uzhhorod", country: "Ukraine" } },
-	// 		{ id: 3, photoURL: 'https://bnetcmsus-a.akamaihd.net/cms/template_resource/03/03U4D4KNCWEH1530817724856.jpg', followed: false, fullName: "George", status: "I hate Igor", location: { city: "Baranyntsi", country: "Ukraine" } },
-	// 		{ id: 4, photoURL: 'https://bnetcmsus-a.akamaihd.net/cms/template_resource/03/03U4D4KNCWEH1530817724856.jpg', followed: true, fullName: "Diana", status: "I believe in tooth-fairies", location: { city: "Vilkhiwtsi", country: "Ukraine" } },
-	// 	])
-	// }
+	let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
+
+	let pages = [];
+	for (let i = 1; i <= pagesCount; i++) {
+		pages.push(i);
+	}
 
 	return (
 		<div>
-			<button onClick={getUsers}>Get Users</button>
+			<div>
+				{pages.map(p => {
+					return <span className={props.currentPage === p ? styles.selectedPage : ""}
+						onClick={() => { props.onPageChanged(p) }}>{`${p} `}</span>
+				})}
+			</div>
 			{
 				props.users.map(u => <div key={u.id}>
 					<span>
 						<div>
-							<img src={u.photos.small !== null ? u.photos.small : userPhoto} alt="" className={styles.userPhoto} />
+							<NavLink to={`/profile/` + u.id}>
+								<img src={u.photos.small !== null ? u.photos.small : userPhoto} alt="" className={styles.userPhoto} />
+							</NavLink>
 						</div>
 						<div>
-							{u.followed ? <button onClick={() => { props.unFollow(u.id) }}>Unfollow</button> : <button onClick={() => { props.follow(u.id) }}>Follow</button>}
-							{/* <button>Follow</button> */}
+							{u.followed ? <button onClick={() => { props.unFollow(u.id) }}>Unfollow</button>
+								: <button onClick={() => { props.follow(u.id) }}>Follow</button>}
 						</div>
 					</span>
 					<span>
