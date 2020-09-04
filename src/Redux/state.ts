@@ -16,7 +16,16 @@ export type MessagesType = {
 export type StateType = {
 	profilePage: PostType,
 	messagesPage: DialogsDataType,
-	usersPage: UsersType
+	usersPage: UsersType,
+	auth: setUserProfileDataType
+}
+
+export type setUserProfileDataType = {
+	id: number,
+	email: string,
+	login: string,
+	// isFetching?: boolean,
+	isAuth: boolean
 }
 
 export type PostType = {
@@ -111,13 +120,30 @@ export type ToggleIsfetchingType = {
 	type: 'TOGGLE-IS-FETCHING',
 	isFetching: boolean
 }
+export type ToggleFollowingInProgressType = {
+	type: 'TOGGLE-IS-FOLLOWING-PROGRESS',
+	isFetching: boolean,
+	userId: number
+	// followingInProgress: boolean
+}
 
 export type SetUserProfileType = {
 	type: 'SET-USER-PROFILE',
 	profile: any
 }
 
-export type ActionsType = AddPostActionType | UpdateNewPostTextActionType | SendMessageActionType | UpdateMessageActionType | FollowActionType | UnFollowActionType | SetUsersActionType | SetCurrentPageType | SetUsersTotalCountType | ToggleIsfetchingType | SetUserProfileType
+export type UserDataType = {
+	id: number,
+	email: string,
+	login: string 
+}
+
+export type SetUserDataType = {
+	type: 'SET-USER-DATA',
+	data: UserDataType
+}
+
+export type ActionsType = AddPostActionType | UpdateNewPostTextActionType | SendMessageActionType | UpdateMessageActionType | FollowActionType | UnFollowActionType | SetUsersActionType | SetCurrentPageType | SetUsersTotalCountType | ToggleIsfetchingType | SetUserProfileType | SetUserDataType | ToggleFollowingInProgressType
 
 
 // let store: StoreType = {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import UsersApiComponent from './UsersAPIComponent';
 // import { StateType, ActionsType } from '../../Redux/state';
 import { StateType } from '../../Redux/state';
-import { follow, unFollow, setUsers, setCurrentPage, setUsersTotalCount, toggleIsFetching } from '../../Redux/users-reducer';
+import { follow, unFollow, setUsers, setCurrentPage, setUsersTotalCount, toggleIsFetching, toggleFollowingProgress } from '../../Redux/users-reducer';
 // import { follow, unFollow, UserType1, setUsers, setCurrentPage, setUsersTotalCount, toggleIsFetching } from '../../Redux/users-reducer';
 
 let mapStateToProps = (state: StateType) => {
@@ -12,7 +12,8 @@ let mapStateToProps = (state: StateType) => {
 		pageSize: state.usersPage.pageSize,
 		totalUsersCount: state.usersPage.totalUsersCount,
 		currentPage: state.usersPage.currentPage,
-		isFetching: state.usersPage.isFetching
+		isFetching: state.usersPage.isFetching,
+		followingInProgress: state.usersPage.followingInProgress
 	}
 }
 
@@ -45,6 +46,7 @@ export default connect(mapStateToProps, {
 	setUsers,
 	setCurrentPage,
 	setUsersTotalCount,
-	toggleIsFetching
+	toggleIsFetching,
+	toggleFollowingProgress
 })(UsersApiComponent);
 // export default connect(mapStateToProps, mapDispatchToProps)(UsersApiComponent);
