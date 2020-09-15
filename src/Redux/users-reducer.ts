@@ -1,3 +1,4 @@
+import { followUser, getUsers, unfollowUser } from "../API/api";
 import { ActionsType } from "./state";
 
 const FOLLOW = 'FOLLOW';
@@ -44,7 +45,7 @@ let initialState: UsersType = {
 		// { id: 3, photoURL: 'https://bnetcmsus-a.akamaihd.net/cms/template_resource/03/03U4D4KNCWEH1530817724856.jpg', followed: false, fullName: "George", status: "I hate Igor", location: { city: "Baranyntsi", country: "Ukraine" } },
 		// { id: 4, photoURL: 'https://bnetcmsus-a.akamaihd.net/cms/template_resource/03/03U4D4KNCWEH1530817724856.jpg', followed: true, fullName: "Diana", status: "I believe in tooth-fairies", location: { city: "Vilkhiwtsi", country: "Ukraine" } },
 	],
-	pageSize: 10, 
+	pageSize: 10,
 	totalUsersCount: 0,
 	currentPage: 1,
 	isFetching: false,
@@ -80,19 +81,20 @@ const UsersReducer = (state: UsersType = initialState, action: ActionsType) => {
 			return { ...state, users: action.users }
 		}
 		case 'SET-CURRENT-PAGE': {
-			return { ...state, currentPage: action.page}
+			return { ...state, currentPage: action.page }
 		}
 		case 'SET-USERS-TOTAL-COUNT': {
-			return { ...state, totalUsersCount: action.usersCount}
+			return { ...state, totalUsersCount: action.usersCount }
 		}
-		case 'TOGGLE-IS-FETCHING':{
-			return {...state, isFetching: action.isFetching}
+		case 'TOGGLE-IS-FETCHING': {
+			return { ...state, isFetching: action.isFetching }
 		}
-		case TOGGLE_IS_FOLLOWING_PROGRESS:{
-			return {...state, 
-			followingInProgress: action.isFetching 
-				? [...state.followingInProgress, action.userId] 
-				: state.followingInProgress.filter(id => id !== action.userId) 
+		case TOGGLE_IS_FOLLOWING_PROGRESS: {
+			return {
+				...state,
+				followingInProgress: action.isFetching
+					? [...state.followingInProgress, action.userId]
+					: state.followingInProgress.filter(id => id !== action.userId)
 			}
 		}
 
@@ -109,16 +111,54 @@ export const setUsers = (users: Array<UserType1>): ActionsType => {
 	return { type: SET_USERS, users }
 }
 export const setCurrentPage = (currentPageNumber: number): ActionsType => {
-	return {type: SET_CURRENT_PAGE, page: currentPageNumber}
+	return { type: SET_CURRENT_PAGE, page: currentPageNumber }
 }
 export const setUsersTotalCount = (usersCount: number): ActionsType => {
-	return {type: SET_USERS_TOTAL_COUNT, usersCount: usersCount}
+	return { type: SET_USERS_TOTAL_COUNT, usersCount: usersCount }
 }
 export const toggleIsFetching = (isFetching: boolean): ActionsType => {
-	return { type: TOGGLE_IS_FETCHING, isFetching: isFetching}
+	return { type: TOGGLE_IS_FETCHING, isFetching: isFetching }
 }
 export const toggleFollowingProgress = (isFetching: boolean, userId: number): ActionsType => {
-	return { type: TOGGLE_IS_FOLLOWING_PROGRESS, isFetching, userId}
+	return { type: TOGGLE_IS_FOLLOWING_PROGRESS, isFetching, userId }
+}
+
+export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
+	return (dispatch: (arg0: ActionsType) => void) => {
+		dispatch(toggleIsFetching(true));
+		getUsers(currentPage, pageSize)
+			.then(data => {
+				dispatch(toggleIsFetching(false));
+				dispatch(setUsers(data.items));
+				dispatch(setUsersTotalCount(data.totalCount))
+			});
+	}
+}
+
+export const followUsersThunkCreator = (userId: number) => {
+	return (dispatch: (arg0: ActionsType) => void) => {
+		dispatch(toggleFollowingProgress(true, userId));
+		followUser(userId)
+			.then(data => {
+				if (data.resultCode === 0) {
+					dispatch(follow(userId));
+				}
+				dispatch(toggleFollowingProgress(false, userId));
+			})
+	}
+}
+
+export const unfollowUsersThunkCreator = (userId: number) => {
+	return (dispatch: (arg0: ActionsType) => void) => {
+		dispatch(toggleFollowingProgress(true, userId))
+		unfollowUser(userId)
+			.then(data => {
+				if (data.resultCode === 0) {
+					dispatch(unFollow(userId));
+				}
+				dispatch(toggleFollowingProgress(false, userId));
+			})
+	}
 }
 
 export default UsersReducer;

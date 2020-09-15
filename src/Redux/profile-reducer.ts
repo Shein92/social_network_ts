@@ -1,3 +1,4 @@
+import { getMyProfilePage } from "../API/api";
 import { ActionsType, PostType, UserProfileType } from "./state";
 
 const ADD_POST = 'ADD-POST';
@@ -49,5 +50,13 @@ export const updateNewPostActionCreator = (text: string): ActionsType =>
 	({ type: UPDATE_NEW_POST_TEXT, newText: text });
 export const setUserProfile = (profile: UserProfileType): ActionsType =>
 	({ type: SET_USER_PROFILE, profile });
+
+export const getMyProfilePageThunkCreator = (userId: number) => {
+	return (dispatch: (arg0: ActionsType) => void) => {
+		getMyProfilePage(userId).then(response => {
+			dispatch(setUserProfile(response.data))
+		}) 
+	}
+}
 
 export default ProfileReducer;

@@ -3,9 +3,11 @@ import dialog from './Dialogs.module.css';
 import DialogItem from './DialogItem/DialogItem';
 import Message from './Message/Message';
 import { DialogsDataType } from '../../Redux/state';
+import { Redirect } from 'react-router-dom';
 
 type DialogsPropsType = {
 	messagesPage: DialogsDataType;
+	isAuth: boolean
 
 	sendMessage: () => void
 	onNewMessageChange: (newText: string) => void
@@ -28,8 +30,11 @@ class Dialogs extends React.Component<DialogsPropsType> {
 	sendMessage = () => {
 		this.props.sendMessage();
 	}
-	
+
 	render() {
+		if(this.props.isAuth === false) {
+			return <Redirect to={'/login'}/>
+		}
 		return (
 			<div className={dialog.dialogs}>
 				<div className={dialog.dialogs_items}>
