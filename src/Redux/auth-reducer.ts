@@ -1,4 +1,6 @@
-import { getMyPage } from '../API/api';
+import { AnyAction, Dispatch } from 'redux';
+import { stopSubmit } from 'redux-form';
+import { getMyPage, login, logout } from '../API/api';
 import { ActionsType } from './state';
 
 const SET_USER_DATA = 'SET-USER-DATA';
@@ -8,7 +10,7 @@ export type setUserInitialStateDataType = {
 	id: number | null,
 	email: string | null,
 	login: string | null,
-	isFetching?: boolean,
+	// isFetching?: boolean,
 	isAuth: boolean
 }
 
@@ -26,7 +28,6 @@ const AuthReducer = (state: setUserInitialStateDataType = initialState, action: 
 			return {
 				...state,
 				...action.data,
-				isAuth: true
 			}
 		}
 
@@ -36,17 +37,42 @@ const AuthReducer = (state: setUserInitialStateDataType = initialState, action: 
 	}
 } 
 
-export const setUserDataActionCreator = (userId: number, email: string, login: string): ActionsType => {
-	return {type: 'SET-USER-DATA', data: {id: userId, email, login}}
+export const setUserDataActionCreator = (userId: number | null, email: string | null, login: string | null, isAuth: boolean): ActionsType => {
+	return {type: 'SET-USER-DATA', data: {id: userId, email, login, isAuth}}
 }
 
 export const setUserDataThunkCreator = () => {
-	return (dispatch: (arg0: ActionsType) => void) => {
+	// return (dispatch: (arg0: ActionsType) => void) => {
+	return (dispatch: Dispatch) => {
 		getMyPage()
 			.then(data => {
 				if(data.resultCode === 0) {
 					let {id, email, login} = data.data;
-					dispatch(setUserDataActionCreator(id, email, login))
+					dispatch(setUserDataActionCreator(id, email, login, true))
+				}
+			})
+	}
+}
+export const loginThunkCreator = (email: string, password: string, rememberMe: boolean) => {
+	return (dispatch: any) => {
+		login(email, password, rememberMe)
+			.then(response => {
+				if(response.data.stausCode === 0) {
+					dispatch(setUserDataThunkCreator())
+				} else {
+					let message = response.data.messages.length > 0 ? response.data.messages[0] : "Somre error"
+					dispatch(stopSubmit("login", {_error: message}))
+					// dispatch(stopSubmit("login", {_error: "Email or password is wrong"}))
+				}
+			})
+	}
+}
+export const logoutThunkCreator = () => {
+	return (dispatch: (arg0: ActionsType) => void) => {
+		logout()
+			.then(response => {
+				if(response.data.stausCode === 0) {
+					dispatch(setUserDataActionCreator(null, null, null, false))
 				}
 			})
 	}

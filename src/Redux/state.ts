@@ -30,8 +30,8 @@ export type setUserProfileDataType = {
 
 export type PostType = {
 	postsData: Array<PostsDataType>,
-	newPostText: string,
-	profile: UserProfileType | null
+	profile: UserProfileType | null,
+	status: string
 }
 
 export type UserProfileType = {
@@ -62,7 +62,6 @@ export type PhotoType = {
 export type DialogsDataType = {
 	dialogsData: Array<UserType>,
 	messagesData: Array<MessagesType>,
-	newMessageBody: string
 }
 
 // export type StoreType = {
@@ -74,7 +73,8 @@ export type DialogsDataType = {
 // }
 
 export type AddPostActionType = {
-	type: "ADD-POST"
+	type: "ADD-POST",
+	text: string
 }
 
 type UpdateNewPostTextActionType = {
@@ -89,6 +89,7 @@ export type UpdateMessageActionType = {
 
 type SendMessageActionType = {
 	type: "SEND-MESSAGE",
+	message: string
 }
 
 export type FollowActionType = {
@@ -133,9 +134,10 @@ export type SetUserProfileType = {
 }
 
 export type UserDataType = {
-	id: number,
-	email: string,
-	login: string 
+	id: number | null,
+	email: string | null,
+	login: string | null,
+	isAuth: boolean 
 }
 
 export type SetUserDataType = {
@@ -143,7 +145,12 @@ export type SetUserDataType = {
 	data: UserDataType
 }
 
-export type ActionsType = AddPostActionType | UpdateNewPostTextActionType | SendMessageActionType | UpdateMessageActionType | FollowActionType | UnFollowActionType | SetUsersActionType | SetCurrentPageType | SetUsersTotalCountType | ToggleIsfetchingType | SetUserProfileType | SetUserDataType | ToggleFollowingInProgressType
+export type SetUserStatus = {
+	type: 'SET-USER-STATUS',
+	status: string
+}
+
+export type ActionsType = AddPostActionType | UpdateNewPostTextActionType | SendMessageActionType | UpdateMessageActionType | FollowActionType | UnFollowActionType | SetUsersActionType | SetCurrentPageType | SetUsersTotalCountType | ToggleIsfetchingType | SetUserProfileType | SetUserDataType | ToggleFollowingInProgressType | SetUserStatus
 
 
 // let store: StoreType = {

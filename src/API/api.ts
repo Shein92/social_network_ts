@@ -18,6 +18,14 @@ export const getMyPage = () => {
 		.then(response => response.data)
 }
 
+export const login = (email: string, password: string, rememberMe: boolean = false) => {
+	return instance.post(`auth/login`,{email, password, rememberMe});
+}
+
+export const logout = () => {
+	return instance.delete(`auth/login`);
+}
+
 export const unfollowUser = (id: number) => {
 	return instance.delete(`follow/${id}`)
 		.then(response => response.data)
@@ -30,5 +38,10 @@ export const followUser = (id: number) => {
 
 export const getMyProfilePage = (userId: number) => {
 	return instance.get(`profile/${userId}`)
-		// .then(response => response.data);
 }
+export const getUserStatus = (userId: number) => {
+	return instance.get(`profile/status/${userId}`)
+}
+export const updateUserStatus = (status: string) => {
+	return instance.put('profile/status', {status: status})
+} 

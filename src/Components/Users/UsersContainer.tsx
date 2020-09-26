@@ -2,6 +2,8 @@ import { connect } from 'react-redux';
 import UsersApiComponent from './UsersAPIComponent';
 import { StateType } from '../../Redux/state';
 import { setCurrentPage, getUsersThunkCreator, followUsersThunkCreator, unfollowUsersThunkCreator } from '../../Redux/users-reducer';
+import { withAuthRedirect } from '../hoc/WithAuthRedirect';
+// import { compose } from 'redux';
 
 let mapStateToProps = (state: StateType) => {
 	return {
@@ -15,10 +17,22 @@ let mapStateToProps = (state: StateType) => {
 	}
 }
 
+let AuthRedirectComponent = withAuthRedirect(UsersApiComponent);
+
 export default connect(mapStateToProps, {
 	setCurrentPage,
 	getUsers: getUsersThunkCreator,
 	followUsersThunkCreator,
 	unfollowUsersThunkCreator
-})(UsersApiComponent);
+})(AuthRedirectComponent)
+
+// export default UserContainer;
+// export default compose(
+// 	connect(mapStateToProps, {
+// 		setCurrentPage,
+// 		getUsers: getUsersThunkCreator,
+// 		followUsersThunkCreator,
+// 		unfollowUsersThunkCreator
+// 	}),
+// 	withAuthRedirect)(UsersApiComponent)
 // export default connect(mapStateToProps, mapDispatchToProps)(UsersApiComponent);

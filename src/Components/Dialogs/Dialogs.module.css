@@ -6,9 +6,6 @@
 .dialogs_items {
     padding: 10px;
 }
-/* .dialogs_items .active{
-    color: goldenrod;
-} */
 .dialog a{
     text-decoration: none;
     color: rgb(57, 158, 194);

@@ -1,9 +1,9 @@
-import { getMyProfilePage } from "../API/api";
+import { getMyProfilePage, getUserStatus, updateUserStatus } from "../API/api";
 import { ActionsType, PostType, UserProfileType } from "./state";
 
 const ADD_POST = 'ADD-POST';
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_USER_PROFILE = 'SET-USER-PROFILE';
+const SET_USER_STATUS = 'SET-USER-STATUS';
 
 let initialState = {
 	postsData: [
@@ -11,32 +11,27 @@ let initialState = {
 		{ id: 2, message: "It's my first post", likesCount: 21 },
 		{ id: 3, message: "I love Kori <3", likesCount: 100 }
 	],
-	newPostText: '',
 	profile: null,
+	status: ''
 }
 
 const ProfileReducer = (state: PostType = initialState, action: ActionsType) => {
 
 	switch (action.type) {
 		case ADD_POST: {
-			return { 
-				...state,
-				newPostText: '',
-				postsData: [...state.postsData, 
-					{ id: 5, message: state.newPostText, likesCount: 0 }
-				]  
-			};
-		}
-		case UPDATE_NEW_POST_TEXT: {
-
 			return {
 				...state,
-				newPostText: action.newText
-			}
+				postsData: [{ id: 5, message: action.text, likesCount: 0 },...state.postsData]
+			};
 		}
 		case SET_USER_PROFILE: {
 			return {
 				...state, profile: action.profile
+			}
+		}
+		case SET_USER_STATUS: {
+			return {
+				...state, status: action.status
 			}
 		}
 		default:
@@ -44,18 +39,35 @@ const ProfileReducer = (state: PostType = initialState, action: ActionsType) => 
 	}
 }
 
-export const addPostActionCreator = (): ActionsType =>
-	({ type: ADD_POST });
-export const updateNewPostActionCreator = (text: string): ActionsType =>
-	({ type: UPDATE_NEW_POST_TEXT, newText: text });
+export const addPostActionCreator = (newText: string): ActionsType =>
+	({ type: ADD_POST, text: newText });
 export const setUserProfile = (profile: UserProfileType): ActionsType =>
 	({ type: SET_USER_PROFILE, profile });
+export const setUserStatusACtionCreator = (status: string): ActionsType =>
+	({ type: SET_USER_STATUS, status: status })
 
 export const getMyProfilePageThunkCreator = (userId: number) => {
 	return (dispatch: (arg0: ActionsType) => void) => {
 		getMyProfilePage(userId).then(response => {
 			dispatch(setUserProfile(response.data))
-		}) 
+		})
+	}
+}
+export const getUserStatusThunkCreator = (userId: number) => {
+	return (dispatch: (arg0: ActionsType) => void) => {
+		getUserStatus(userId).then(response => {
+			dispatch(setUserStatusACtionCreator(response.data))
+		})
+	}
+}
+
+export const updateUserStatusThunkCreator = (status: string) => {
+	return (dispatch: (arg0: ActionsType) => void) => {
+		updateUserStatus(status).then(response => {
+			if (response.data.resultCode === 0) {
+				dispatch(setUserStatusACtionCreator(status))
+			}
+		})
 	}
 }
 
