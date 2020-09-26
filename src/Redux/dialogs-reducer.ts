@@ -23,13 +23,6 @@ let initialState: DialogsDataType = {
 const DialogsReducer = (state: DialogsDataType = initialState, action: ActionsType) => {
 
 	switch (action.type) {
-		// case UPDATE_NEW_MESSAGE_BODY:{
-		// 	return {
-		// 		...state,
-		// 		newMessageBody: action.body
-		// 	};
-		// }
-
 		case SEND_MESSAGE:{
 			let body = action.message;
 			return {
@@ -42,8 +35,6 @@ const DialogsReducer = (state: DialogsDataType = initialState, action: ActionsTy
 	}
 }
 
-// export const updateNewMessageBodyActionCreator = (text: string): ActionsType =>
-// 	({ type: UPDATE_NEW_MESSAGE_BODY, body: text })
 export const sendMessageActionCreator = (newMessageBody: string): ActionsType =>
 	({ type: SEND_MESSAGE, message: newMessageBody })
 

@@ -8,7 +8,6 @@ import { StateType } from '../../Redux/state';
 const Login = (props: any) => {
 
 	const onSubmit = (formData: FormDataType) => {
-		// console.log(formData);
 		props.login(formData.login, formData.password, formData.rememberMe)
 	}
 

@@ -3,7 +3,6 @@ import styles from './users.module.css';
 import userPhoto from '../../assets/images/rick.png';
 import { UserType1 } from '../../Redux/users-reducer';
 import { NavLink } from 'react-router-dom';
-// import axios from 'axios';
 
 type UsersPropsType = {
 	users: Array<UserType1>

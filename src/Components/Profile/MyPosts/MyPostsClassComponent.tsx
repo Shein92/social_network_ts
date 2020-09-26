@@ -65,13 +65,10 @@ const AddNewPostForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
 				component={Textarea}
 				placeholder={"Enter your message"}
 				validate={[requiredField, maxLength10]}
-				// value={this.props.newPostText}
-				// onChange={this.onPostsChange}
 				 />
 			</div>
 			<div>
 				<button>Add post</button>
-				{/* <button onClick={this.addPost}>Add post</button> */}
 			</div>
 		</form>
 	)

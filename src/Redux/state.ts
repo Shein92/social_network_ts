@@ -125,7 +125,6 @@ export type ToggleFollowingInProgressType = {
 	type: 'TOGGLE-IS-FOLLOWING-PROGRESS',
 	isFetching: boolean,
 	userId: number
-	// followingInProgress: boolean
 }
 
 export type SetUserProfileType = {

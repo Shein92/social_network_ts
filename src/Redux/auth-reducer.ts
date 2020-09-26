@@ -62,7 +62,6 @@ export const loginThunkCreator = (email: string, password: string, rememberMe: b
 				} else {
 					let message = response.data.messages.length > 0 ? response.data.messages[0] : "Somre error"
 					dispatch(stopSubmit("login", {_error: message}))
-					// dispatch(stopSubmit("login", {_error: "Email or password is wrong"}))
 				}
 			})
 	}
