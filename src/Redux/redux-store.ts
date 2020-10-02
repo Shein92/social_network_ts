@@ -5,6 +5,7 @@ import UsersReducer from './users-reducer';
 import AuthReducer from './auth-reducer';
 import thunk from 'redux-thunk';
 import { reducer as formReducer } from 'redux-form'
+import { appReducer } from './app-reducer';
 
 
 let reducers = combineReducers({
@@ -12,7 +13,8 @@ let reducers = combineReducers({
     messagesPage: DialogsReducer,
     usersPage: UsersReducer,
     auth: AuthReducer,
-    form: formReducer
+    form: formReducer, 
+    app: appReducer
 })
 
 type RootReducerType = typeof reducers;

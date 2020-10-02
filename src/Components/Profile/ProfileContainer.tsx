@@ -2,9 +2,11 @@ import React from 'react';
 import Profile from './Profile';
 import { connect } from 'react-redux';
 import { getMyProfilePageThunkCreator, getUserStatusThunkCreator, updateUserStatusThunkCreator } from '../../Redux/profile-reducer'
-import { StateType, UserProfileType } from '../../Redux/state';
+import { UserProfileType } from '../../Redux/state';
 import { withRouter } from 'react-router-dom';
 import { withAuthRedirect } from '../hoc/WithAuthRedirect';
+import { getAuthorizedUserId, getIsAuth, getProfile, getStatus } from '../../Redux/users-selectors';
+import { AppStateType } from '../../Redux/redux-store';
 // import { compose } from 'redux';
 
 type ProfileContainerPropsType = {
@@ -18,6 +20,9 @@ class ProfileContainer extends React.Component<any> {
 		let userId: number = this.props.match.params.userId;
 		if (!userId) {
 			userId = this.props.authorizedUserId;
+			if(!userId) {
+				this.props.history.push("/login")
+			}
 		}
 
 
@@ -38,11 +43,11 @@ class ProfileContainer extends React.Component<any> {
 
 let AuthRedirectComponent = withAuthRedirect(ProfileContainer);
 
-let mapStateToProps = (state: StateType) => ({
-	profile: state.profilePage.profile,
-	status: state.profilePage.status,
-	authorizedUserId: state.auth.id,
-	isAuth: state.auth.isAuth
+let mapStateToProps = (state: AppStateType) => ({
+	profile: getProfile(state),
+	status: getStatus(state),
+	authorizedUserId: getAuthorizedUserId(state),
+	isAuth: getIsAuth(state)
 })
 
 let WithUrlDataContainerComponent = withRouter(AuthRedirectComponent)

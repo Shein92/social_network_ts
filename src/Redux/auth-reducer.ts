@@ -1,4 +1,4 @@
-import { AnyAction, Dispatch } from 'redux';
+import { Dispatch } from 'redux';
 import { stopSubmit } from 'redux-form';
 import { getMyPage, login, logout } from '../API/api';
 import { ActionsType } from './state';
@@ -44,7 +44,7 @@ export const setUserDataActionCreator = (userId: number | null, email: string | 
 export const setUserDataThunkCreator = () => {
 	// return (dispatch: (arg0: ActionsType) => void) => {
 	return (dispatch: Dispatch) => {
-		getMyPage()
+		return getMyPage()
 			.then(data => {
 				if(data.resultCode === 0) {
 					let {id, email, login} = data.data;
