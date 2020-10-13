@@ -3,7 +3,7 @@ import UsersApiComponent from './UsersAPIComponent';
 import { setCurrentPage, getUsersThunkCreator, followUsersThunkCreator, unfollowUsersThunkCreator } from '../../Redux/users-reducer';
 import { withAuthRedirect } from '../hoc/WithAuthRedirect';
 import { AppStateType } from '../../Redux/redux-store';
-import { getCurrentPage, getFollowingInProgress, getIsAuth, getIsFetching, getPageSize, getTotalUsersCount, getUserds } from '../../Redux/users-selectors';
+import { getCurrentPage, getFollowingInProgress, getIsAuth, getIsFetching, getPageSize, getTotalUsersCount, getUsers } from '../../Redux/users-selectors';
 // import { compose } from 'redux';
 
 // let mapStateToProps = (state: StateType) => {
@@ -19,7 +19,7 @@ import { getCurrentPage, getFollowingInProgress, getIsAuth, getIsFetching, getPa
 // }
 let mapStateToProps = (state: AppStateType) => {
 	return {
-		users: getUserds(state),
+		users: getUsers(state),
 		pageSize: getPageSize(state),
 		totalUsersCount: getTotalUsersCount(state),
 		currentPage: getCurrentPage(state),
