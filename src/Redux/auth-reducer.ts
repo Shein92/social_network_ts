@@ -3,7 +3,7 @@ import { stopSubmit } from 'redux-form';
 import { getMyPage, login, logout } from '../API/api';
 import { ActionsType } from './state';
 
-const SET_USER_DATA = 'SET-USER-DATA';
+const SET_USER_DATA = 'auth/SET-USER-DATA';
 
 
 export type setUserInitialStateDataType = {
@@ -35,45 +35,49 @@ const AuthReducer = (state: setUserInitialStateDataType = initialState, action: 
 			return state
 		}
 	}
-} 
+}
 
 export const setUserDataActionCreator = (userId: number | null, email: string | null, login: string | null, isAuth: boolean): ActionsType => {
-	return {type: 'SET-USER-DATA', data: {id: userId, email, login, isAuth}}
+	return { type: 'auth/SET-USER-DATA', data: { id: userId, email, login, isAuth } }
 }
 
 export const setUserDataThunkCreator = () => {
 	// return (dispatch: (arg0: ActionsType) => void) => {
-	return (dispatch: Dispatch) => {
-		return getMyPage()
-			.then(data => {
-				if(data.resultCode === 0) {
-					let {id, email, login} = data.data;
-					dispatch(setUserDataActionCreator(id, email, login, true))
-				}
-			})
+	return async (dispatch: Dispatch) => {
+		let response = await getMyPage()
+		if (response.resultCode === 0) {
+			let { id, email, login } = response.data;
+			dispatch(setUserDataActionCreator(id, email, login, true))
+		}
+		// .then(data => {
+		// 	if (data.resultCode === 0) {
+		// 		let { id, email, login } = data.data;
+		// 		dispatch(setUserDataActionCreator(id, email, login, true))
+		// 	}
+		// })
 	}
 }
 export const loginThunkCreator = (email: string, password: string, rememberMe: boolean) => {
-	return (dispatch: any) => {
-		login(email, password, rememberMe)
-			.then(response => {
-				if(response.data.stausCode === 0) {
-					dispatch(setUserDataThunkCreator())
-				} else {
-					let message = response.data.messages.length > 0 ? response.data.messages[0] : "Somre error"
-					dispatch(stopSubmit("login", {_error: message}))
-				}
-			})
+	return async (dispatch: any) => {
+		let response = await login(email, password, rememberMe);
+		// .then(response => {
+		if (response.data.stausCode === 0) {
+			dispatch(setUserDataThunkCreator())
+		} else {
+			let message = response.data.messages.length > 0 ? response.data.messages[0] : "Somre error"
+			dispatch(stopSubmit("login", { _error: message }))
+		}
+		// })
 	}
 }
 export const logoutThunkCreator = () => {
-	return (dispatch: (arg0: ActionsType) => void) => {
-		logout()
-			.then(response => {
-				if(response.data.stausCode === 0) {
-					dispatch(setUserDataActionCreator(null, null, null, false))
-				}
-			})
+	return async (dispatch: (arg0: ActionsType) => void) => {
+		let response = await logout();
+		// .then(response => {
+		if (response.data.stausCode === 0) {
+			dispatch(setUserDataActionCreator(null, null, null, false))
+		}
+		// })
 	}
 }
 

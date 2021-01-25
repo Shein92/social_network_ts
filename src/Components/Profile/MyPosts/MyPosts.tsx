@@ -10,7 +10,7 @@ type MyPostsType = {
 	addPost: () => void
 }
 
-function MyPosts(props: MyPostsType) {
+const MyPosts = React.memo((props: MyPostsType) => {
 	let postElements = props.posts.map(p => <Post message={p.message} likeCount={p.likesCount} />);
 
 	let newPostElement = React.createRef<HTMLTextAreaElement>();
@@ -43,6 +43,6 @@ function MyPosts(props: MyPostsType) {
 			</div>
 		</div>
 	)
-}
+})
 
 export default MyPosts;

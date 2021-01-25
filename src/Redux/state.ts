@@ -136,11 +136,11 @@ export type UserDataType = {
 	id: number | null,
 	email: string | null,
 	login: string | null,
-	isAuth: boolean 
+	isAuth: boolean
 }
 
 export type SetUserDataType = {
-	type: 'SET-USER-DATA',
+	type: 'auth/SET-USER-DATA',
 	data: UserDataType
 }
 
@@ -149,7 +149,12 @@ export type SetUserStatus = {
 	status: string
 }
 
-export type ActionsType = AddPostActionType | UpdateNewPostTextActionType | SendMessageActionType | UpdateMessageActionType | FollowActionType | UnFollowActionType | SetUsersActionType | SetCurrentPageType | SetUsersTotalCountType | ToggleIsfetchingType | SetUserProfileType | SetUserDataType | ToggleFollowingInProgressType | SetUserStatus
+export type SavePhotoSuccess = {
+	type: 'SAVE-PHOTO',
+	photos: any
+}
+
+export type ActionsType = AddPostActionType | UpdateNewPostTextActionType | SendMessageActionType | UpdateMessageActionType | FollowActionType | UnFollowActionType | SetUsersActionType | SetCurrentPageType | SetUsersTotalCountType | ToggleIsfetchingType | SetUserProfileType | SetUserDataType | ToggleFollowingInProgressType | SetUserStatus | SavePhotoSuccess
 
 
 // let store: StoreType = {

@@ -1,4 +1,5 @@
-import { getMyProfilePage, getUserStatus, updateUserStatus } from "../API/api";
+import { Dispatch } from "redux";
+import { getMyProfilePage, getUserStatus, savePhotoAPI, updateUserStatus } from "../API/api";
 import { ActionsType, PostType, UserProfileType } from "./state";
 
 const ADD_POST = 'ADD-POST';
@@ -21,7 +22,7 @@ const ProfileReducer = (state: PostType = initialState, action: ActionsType) => 
 		case ADD_POST: {
 			return {
 				...state,
-				postsData: [{ id: 5, message: action.text, likesCount: 0 },...state.postsData]
+				postsData: [{ id: 5, message: action.text, likesCount: 0 }, ...state.postsData]
 			};
 		}
 		case SET_USER_PROFILE: {
@@ -32,6 +33,12 @@ const ProfileReducer = (state: PostType = initialState, action: ActionsType) => 
 		case SET_USER_STATUS: {
 			return {
 				...state, status: action.status
+			}
+		}
+
+		case 'SAVE-PHOTO': {
+			return {
+				...state, profile: { ...state.profile, photos: action.photos }
 			}
 		}
 		default:
@@ -45,16 +52,18 @@ export const setUserProfile = (profile: UserProfileType): ActionsType =>
 	({ type: SET_USER_PROFILE, profile });
 export const setUserStatusACtionCreator = (status: string): ActionsType =>
 	({ type: SET_USER_STATUS, status: status })
+export const savePhotoSuccess = (photos: any): ActionsType =>
+	({ type: 'SAVE-PHOTO', photos })
 
 export const getMyProfilePageThunkCreator = (userId: number) => {
-	return (dispatch: (arg0: ActionsType) => void) => {
+	return (dispatch: Dispatch) => {
 		getMyProfilePage(userId).then(response => {
 			dispatch(setUserProfile(response.data))
 		})
 	}
 }
 export const getUserStatusThunkCreator = (userId: number) => {
-	return (dispatch: (arg0: ActionsType) => void) => {
+	return (dispatch: Dispatch) => {
 		getUserStatus(userId).then(response => {
 			dispatch(setUserStatusACtionCreator(response.data))
 		})
@@ -62,10 +71,20 @@ export const getUserStatusThunkCreator = (userId: number) => {
 }
 
 export const updateUserStatusThunkCreator = (status: string) => {
-	return (dispatch: (arg0: ActionsType) => void) => {
+	return (dispatch: Dispatch) => {
 		updateUserStatus(status).then(response => {
 			if (response.data.resultCode === 0) {
 				dispatch(setUserStatusACtionCreator(status))
+			}
+		})
+	}
+}
+
+export const savePhotoThunkCreator = (file: any) => {
+	return (dispatch: Dispatch) => {
+		savePhotoAPI(file).then(res => {
+			if (res.data.resultCode === 0) {
+				dispatch(savePhotoSuccess(res.data.data.photos))
 			}
 		})
 	}

@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import s from './ProfileInfo.module.css';
 import { UserProfileType } from '../../../Redux/state';
 import Preloader from '../../common/Preloader/Preloader';
 import ProfileStatus from './ProfileStatus';
+import userPhoto from '../../../assets/images/rick.png';
 
 type ProfileInfoPropsType = {
 	profile: null | UserProfileType
 	status: string,
 	updateStatus: (status: string) => void
+	isOwner: boolean
+	savePhoto: (file: any) => void
 }
 
 const ProfileInfo = (props: ProfileInfoPropsType) => {
@@ -16,15 +19,25 @@ const ProfileInfo = (props: ProfileInfoPropsType) => {
 		return <Preloader />
 	}
 
+	const onMainPhotoSelect = (e: ChangeEvent<HTMLInputElement>) => {
+		if(e.currentTarget.files?.length) {
+			props.savePhoto(e.currentTarget.files[0]);
+			// alert(typeof e.currentTarget.files[0]);
+		}
+	}
+
 	return (
 		<div>
 			<div>
 				<img src="https://therightsofnature.org/wp-content/uploads/2018/01/turkey-3048299_1920-1366x550.jpg" alt="" />
 			</div>
 			<div className={s.descriptionBlock}>
-				<img src={props.profile.photos.large} style={{ width: "100px" }} alt="no ava ;(" />
+				<div>
+					<img src={props.profile.photos.large || userPhoto} alt="no ava ;(" className={s.mainPhoto} />
+				</div>
+				{props.isOwner && <div><input type={'file'} onChange={onMainPhotoSelect}/></div>}
 				<span>{props.profile.fullName}</span>
-				<ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
+				<ProfileStatus status={props.status} updateStatus={props.updateStatus} />
 			</div>
 			<div>
 				{props.profile.aboutMe}

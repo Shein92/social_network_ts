@@ -1,13 +1,11 @@
-import React from 'react';
+ import React, { Suspense } from 'react';
 import './App.css';
 import Nav from './Components/Nav/Nav';
 import { Route, withRouter } from "react-router-dom";
 import Music from './Components/Music/Music';
 import News from './Components/News/News';
 import Settings from './Components/Settings/Settings';
-import DialogsContainer from './Components/Dialogs/DialogsContainer';
 import UsersContainer from './Components/Users/UsersContainer';
-import ProfileContainer from './Components/Profile/ProfileContainer';
 import HeaderContainer from './Components/Header/HeaderContainer';
 import Login from './Components/Login/Login';
 import { connect } from 'react-redux';
@@ -15,6 +13,13 @@ import { initializeApp } from './Redux/app-reducer'
 import { AppStateType } from './Redux/redux-store';
 import Preloader from './Components/common/Preloader/Preloader';
 import { getInitializedStatus } from './Redux/users-selectors';
+
+// import DialogsContainer from './Components/Dialogs/DialogsContainer';
+// import ProfileContainer from './Components/Profile/ProfileContainer';
+
+const ProfileContainer = React.lazy(() => import('./Components/Profile/ProfileContainer'));
+const DialogsContainer = React.lazy(() => import('./Components/Dialogs/DialogsContainer'));
+
 
 type AppPropsType = {
 	setUserDataThunkCreator: () => void
@@ -37,9 +42,9 @@ class App extends React.Component<any>{
 				<Nav />
 				<div className="app-wrapper-content">
 					<Route path="/messages"
-						render={() => <DialogsContainer />} />
+						render={() => <Suspense fallback={()=>{}}><DialogsContainer /></Suspense>} />
 					<Route path="/profile/:userId?"
-						render={() => <ProfileContainer />} />
+						render={() => <Suspense fallback={()=>{}}><ProfileContainer /></Suspense>} />
 					<Route path="/users"
 						render={() => <UsersContainer />} />
 					<Route path="/news" render={() => <News />} />

@@ -1,4 +1,6 @@
+import { Dispatch } from "redux";
 import { followUser, getUsers, unfollowUser } from "../API/api";
+import { updateObjectInArray } from "../utils/object-helpers";
 import { ActionsType } from "./state";
 
 const FOLLOW = 'FOLLOW';
@@ -58,23 +60,25 @@ const UsersReducer = (state: UsersType = initialState, action: ActionsType) => {
 		case 'FOLLOW': {
 			return {
 				...state,
-				users: state.users.map(u => {
-					if (u.id === action.userId) {
-						return { ...u, followed: true };
-					}
-					return u;
-				})
+				users: updateObjectInArray(state.users, action.userId, 'id', {followed: true})
+				// users: state.users.map(u => {
+				// 	if (u.id === action.userId) {
+				// 		return { ...u, followed: true };
+				// 	}
+				// 	return u;
+				// })
 			}
 		}
 		case 'UNFOLLOW': {
 			return {
 				...state,
-				users: state.users.map(u => {
-					if (u.id === action.userId) {
-						return { ...u, followed: false };
-					}
-					return u;
-				})
+				users: updateObjectInArray(state.users, action.userId, 'id', {followed: false})
+				// users: state.users.map(u => {
+				// 	if (u.id === action.userId) {
+				// 		return { ...u, followed: false };
+				// 	}
+				// 	return u;
+				// })
 			}
 		}
 		case 'SET-USERS': {
@@ -135,29 +139,45 @@ export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
 	}
 }
 
+const followInfollowFLow = async (dispatch: Dispatch, userId: number, apiMethod: (id: number) => Promise<any>, actionCreator: (userId: number) => ActionsType) => {
+	dispatch(toggleFollowingProgress(true, userId))
+	let response = await apiMethod(userId);
+	// .then(data => {
+	if (response.resultCode === 0) {
+		dispatch(actionCreator(userId));
+	}
+	dispatch(toggleFollowingProgress(false, userId));
+}
+
 export const followUsersThunkCreator = (userId: number) => {
-	return (dispatch: (arg0: ActionsType) => void) => {
-		dispatch(toggleFollowingProgress(true, userId));
-		followUser(userId)
-			.then(data => {
-				if (data.resultCode === 0) {
-					dispatch(follow(userId));
-				}
-				dispatch(toggleFollowingProgress(false, userId));
-			})
+	return async (dispatch: Dispatch) => {
+		let apiMethod = followUser;
+		let actionCreator = follow;
+
+		followInfollowFLow(dispatch, userId, apiMethod, actionCreator)
+
+		// dispatch(toggleFollowingProgress(true, userId));
+		// let response = await apiMethod(userId);
+		// if (response.resultCode === 0) {
+		// 	dispatch(actionCreator(userId));
+		// }
+		// dispatch(toggleFollowingProgress(false, userId));
 	}
 }
 
 export const unfollowUsersThunkCreator = (userId: number) => {
-	return (dispatch: (arg0: ActionsType) => void) => {
-		dispatch(toggleFollowingProgress(true, userId))
-		unfollowUser(userId)
-			.then(data => {
-				if (data.resultCode === 0) {
-					dispatch(unFollow(userId));
-				}
-				dispatch(toggleFollowingProgress(false, userId));
-			})
+	return async (dispatch: Dispatch) => {
+		let apiMethod = unfollowUser;
+		let actionCreator = unFollow;
+
+		followInfollowFLow(dispatch, userId, apiMethod, actionCreator)
+
+		// dispatch(toggleFollowingProgress(true, userId))
+		// let response = await apiMethod(userId);
+		// if (response.resultCode === 0) {
+		// 	dispatch(actionCreator(userId));
+		// }
+		// dispatch(toggleFollowingProgress(false, userId));
 	}
 }
 
