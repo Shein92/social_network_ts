@@ -18,14 +18,16 @@ const Login = (props: any) => {
 	return (
 		<div>
 			<h1>Login</h1>
-			<LoginReduxForm onSubmit={onSubmit}/>
+			<LoginReduxForm onSubmit={onSubmit} />
+			{/* <LoginReduxForm onSubmit={onSubmit} captchaUrl={props.captchaUrl}/> */}
 		</div>
 	)
 }
 
 const mapStatetoProps = (state: StateType) => {
 	return {
-		isAuth: state.auth.isAuth
+		isAuth: state.auth.isAuth,
+		captchaUrl: state.auth.captcha
 	}
 }
 

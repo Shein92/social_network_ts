@@ -8,11 +8,11 @@ type PaginatorPropsType = {
 	onPageChanged: (pageNumber: number) => void
 }
 
-const Paginator = (props: PaginatorPropsType, {portionSize = 10}) => {
+const Paginator:React.FC<PaginatorPropsType> = (props: PaginatorPropsType, {portionSize = 10}) => {
 
 	let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
 
-	let pages = [];
+	let pages: Array<number> = [];
 	for (let i = 1; i <= pagesCount; i++) {
 		pages.push(i);
 	} 

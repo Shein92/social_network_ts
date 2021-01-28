@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import { stopSubmit } from 'redux-form';
-import { getMyPage, login, logout } from '../API/api';
+import { getMyPage, login, logout, securityAPI } from '../API/api';
 import { ActionsType } from './state';
 
 const SET_USER_DATA = 'auth/SET-USER-DATA';
@@ -11,7 +11,8 @@ export type setUserInitialStateDataType = {
 	email: string | null,
 	login: string | null,
 	// isFetching?: boolean,
-	isAuth: boolean
+	isAuth: boolean,
+	captcha: string | null
 }
 
 let initialState: setUserInitialStateDataType = {
@@ -19,7 +20,8 @@ let initialState: setUserInitialStateDataType = {
 	email: null,
 	login: null,
 	// isFetching: false
-	isAuth: false
+	isAuth: false,
+	captcha: null
 }
 
 const AuthReducer = (state: setUserInitialStateDataType = initialState, action: ActionsType): setUserInitialStateDataType => {
@@ -29,6 +31,10 @@ const AuthReducer = (state: setUserInitialStateDataType = initialState, action: 
 				...state,
 				...action.data,
 			}
+		}
+
+		case 'GET-CAPTCHA-URL': {
+			return {...state, captcha: action.payload.url}
 		}
 
 		default: {
@@ -57,19 +63,42 @@ export const setUserDataThunkCreator = () => {
 		// })
 	}
 }
+
+export const getCaptchUrlSuccess = (url: string) => {
+	return {type: 'GET-CAPTCHA-URL', payload: {url: url}} as const
+}
+
 export const loginThunkCreator = (email: string, password: string, rememberMe: boolean) => {
 	return async (dispatch: any) => {
 		let response = await login(email, password, rememberMe);
 		// .then(response => {
-		if (response.data.stausCode === 0) {
+		// if (response.data.statusCode === 0) {
+		if (response.data.resultCode === 0) {
 			dispatch(setUserDataThunkCreator())
 		} else {
+			if (response.data.resultCode === 10) {
+				dispatch(getCaptchaUrl);
+			}
 			let message = response.data.messages.length > 0 ? response.data.messages[0] : "Somre error"
 			dispatch(stopSubmit("login", { _error: message }))
 		}
 		// })
 	}
 }
+
+export const getCaptchaUrl = () => {
+	return async (dispatch: any) => {
+		const response = await securityAPI.getCaptcha()
+		// .then(response => {
+		
+		const captchaUrl = response.data.url;
+
+		// let message = response.data.messages.length > 0 ? response.data.messages[0] : "Somre error"
+		dispatch(getCaptchUrlSuccess(captchaUrl))
+		// })
+	}
+}
+
 export const logoutThunkCreator = () => {
 	return async (dispatch: (arg0: ActionsType) => void) => {
 		let response = await logout();

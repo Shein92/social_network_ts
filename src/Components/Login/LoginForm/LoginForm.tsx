@@ -8,7 +8,7 @@ import style from '../../common/FormsControls/FormsControls.module.css'
 export type FormDataType = {
 	login: string,
 	password: string,
-	rememberMe: boolean
+	rememberMe: boolean,
 }
 
 
@@ -17,13 +17,13 @@ const LoginForm = (props: any) => {
 	return (
 		<form onSubmit={props.handleSubmit}>
 			<div>
-				<Field name={'login'} validate={[requiredField]} placeholder={'Login'} component={Input}/>
+				<Field name={'login'} validate={[requiredField]} placeholder={'Login'} component={Input} />
 			</div>
 			<div>
-				<Field name={'password'} validate={[requiredField]} placeholder={'Password'} type={"password"} component={Input}/>
+				<Field name={'password'} validate={[requiredField]} placeholder={'Password'} type={"password"} component={Input} />
 			</div>
 			<div>
-				<Field name={'rememberMe'} type="checkbox" component={Input}/> Remember me
+				<Field name={'rememberMe'} type="checkbox" component={Input} /> Remember me
             </div>
 			{props.error && <div className={style.formSummaryError}>
 				{props.error}

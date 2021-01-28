@@ -8,13 +8,29 @@ let instance = axios.create({
 	}
 })
 
+enum ResultCodesEnum {
+	Success = 0,
+	Error = 1,
+	Captcha = 10
+}
+
+type AuthMeType = {
+	data: {
+		id: number,
+		email: string,
+		login: string
+	}
+	resultCode: number,
+	messages: Array<string>
+}
+
 export const getUsers = (currentPage: number = 1, pageSize: number = 10) => {
 	return instance.get(`users?page=${currentPage}&count=${pageSize}`)
 		.then(response => response.data)
 }
 
 export const getMyPage = () => {
-	return instance.get('auth/me')
+	return instance.get<AuthMeType>('auth/me')
 		.then(response => response.data)
 }
 
@@ -54,4 +70,10 @@ export const savePhotoAPI = (file: any) => {
 			'Content-Type': 'multipart/form-data'
 		}
 	})
+}
+
+export const securityAPI = {
+	getCaptcha() {
+		return instance.get('/security/get-captcha-url')
+	}
 }

@@ -36,7 +36,7 @@ export default connect(mapStateToProps, {
 	getUsers: getUsersThunkCreator,
 	followUsersThunkCreator,
 	unfollowUsersThunkCreator
-})(AuthRedirectComponent)
+})(AuthRedirectComponent);
 
 // export default UserContainer;
 // export default compose(

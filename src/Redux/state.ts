@@ -1,3 +1,4 @@
+import { getCaptchUrlSuccess } from "./auth-reducer"
 import { UserType1, UsersType } from "./users-reducer"
 
 export type PostsDataType = {
@@ -25,7 +26,8 @@ export type setUserProfileDataType = {
 	email: string,
 	login: string,
 	// isFetching?: boolean,
-	isAuth: boolean
+	isAuth: boolean,
+	captcha: string | null
 }
 
 export type PostType = {
@@ -45,13 +47,13 @@ export type UserProfileType = {
 }
 export type ContactType = {
 	facebook: string,
-	github: string,
+	github: string
 	instagram: string
-	mainLink: null | string
+	mainLink: string
 	twitter: string
 	vk: string
-	website: null | string
-	youtube: null | string
+	website: string
+	youtube: string
 }
 
 export type PhotoType = {
@@ -154,7 +156,7 @@ export type SavePhotoSuccess = {
 	photos: any
 }
 
-export type ActionsType = AddPostActionType | UpdateNewPostTextActionType | SendMessageActionType | UpdateMessageActionType | FollowActionType | UnFollowActionType | SetUsersActionType | SetCurrentPageType | SetUsersTotalCountType | ToggleIsfetchingType | SetUserProfileType | SetUserDataType | ToggleFollowingInProgressType | SetUserStatus | SavePhotoSuccess
+export type ActionsType = AddPostActionType | UpdateNewPostTextActionType | SendMessageActionType | UpdateMessageActionType | FollowActionType | UnFollowActionType | SetUsersActionType | SetCurrentPageType | SetUsersTotalCountType | ToggleIsfetchingType | SetUserProfileType | SetUserDataType | ToggleFollowingInProgressType | SetUserStatus | SavePhotoSuccess | ReturnType<typeof getCaptchUrlSuccess>
 
 
 // let store: StoreType = {
